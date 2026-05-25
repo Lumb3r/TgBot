@@ -6,9 +6,7 @@ namespace TgBot.Services;
 
 public class ImageCompressor
 {
-    /// <summary>
     /// Сжимает изображение до минимального качества JPEG.
-    /// </summary>
     public MemoryStream CompressToLowQuality(Stream inputStream)
     {
         var outputStream = new MemoryStream();
@@ -16,7 +14,7 @@ public class ImageCompressor
         using (var image = Image.Load(inputStream))
         {
             // Устанавливаем минимальное качество JPEG для создания артефактов сжатия
-            var encoder = new JpegEncoder { Quality = 5 };
+            var encoder = new JpegEncoder { Quality = 7 };
             image.Save(outputStream, encoder);
         }
 
