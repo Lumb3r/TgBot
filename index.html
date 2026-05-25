@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Мини Апп</title>
+    <!-- Подключаем официальный скрипт Telegram для взаимодействия с мессенджером -->
+    <script src="https://telegram.org"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* Автоматически подстраиваем цвета под тему оформления Telegram пользователя */
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #000000);
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            margin-top: 50px;
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 16px;
+            color: var(--tg-theme-hint-color, #aaaaaa);
+            margin-bottom: 30px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            /* Стили кнопки также берутся из настроек темы Telegram */
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+            button:active {
+                opacity: 0.8;
+            }
+    </style>
+</head>
+<body>
+
+    <h1>Привет, <span id="username">Пользователь</span>! 👋</h1>
+    <p>Это твое первое мини-приложение в Telegram.</p>
+
+    <button onclick="closeApp()">Закрыть приложение</button>
+
+    <script>// @ts-ignore
+    const tg = window.Telegram?.WebApp;
+
+    // Проверяем, что скрипт инициализировался внутри Telegram
+    if (tg) {
+        tg.expand(); // Разворачиваем мини-приложение на весь экран смартфона
+
+        // Безопасное чтение данных пользователя (защита от null)
+        if (tg.initDataUnsafe?.user) {
+            const usernameElement = document.getElementById('username');
+            if (usernameElement) {
+                usernameElement.innerText = tg.initDataUnsafe.user.first_name;
+            }
+        }
+    } else {
+        console.log("Приложение запущено в обычном браузере вне Telegram.");
+    }
+
+    // Функция закрытия мини-приложения при нажатии на кнопку
+    function closeApp() {
+        if (tg) {
+            tg.close();
+        }
+    }</script>
+</body>
+</html>
