@@ -67,25 +67,24 @@ public class UpdateHandler
                                  "2. Шакалить картинки: просто отправь мне любое фото!\n" +
                                  "3. Генератор чисел: используй команду `/рандом`";
 
-            // ИСПРАВЛЕНИЕ: Создаем строгую структуру клавиатуры (ReplyKeyboard) для v22.x
+            // ИСПРАВЛЕНИЕ: Корректное создание ReplyKeyboardMarkup для версии v22.x
             var replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
             {
         new[]
         {
-            // ВАЖНО: Замените эту ссылку на ваш GitHub Pages, если она отличается!
             KeyboardButton.WithWebApp("Открыть приложение 🚀", "https://github.io")
         }
     })
             {
-                ResizeKeyboard = true,        // Делает кнопку компактной по высоте
-                IsPersistent = true             // Кнопка не будет скрываться при вводе текста
+                ResizeKeyboard = true, // Делает кнопку аккуратной по высоте смартфона
+                IsPersistent = true      // Кнопка не будет скрываться при открытии буквенной клавиатуры
             };
 
             await botClient.SendMessage(
                 chatId: textChatId,
                 text: welcomeText,
                 parseMode: ParseMode.Markdown,
-                replyMarkup: replyKeyboardMarkup, // Передаем клавиатуру
+                replyMarkup: replyKeyboardMarkup, // Отправляем клавиатурную кнопку
                 cancellationToken: cancellationToken
             );
             return;
