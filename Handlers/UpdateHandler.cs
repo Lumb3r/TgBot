@@ -6,7 +6,8 @@ using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TgBot.Commands;
-using TgBot.Services; // Подключаем наши сервисы из папки Services
+using TgBot.Services;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TgBot.Handlers;
 
@@ -64,12 +65,27 @@ public class UpdateHandler
             string welcomeText = "Привет! 👋 Я умею:\n" +
                                  "1. Считать дни: `/дата ДД.ММ.ГГГГ`\n" +
                                  "2. Шакалить картинки: просто отправь мне любое фото!\n" +
-                                 "3. Генератор чисел: `/число [мин] [макс]` (например, `/рандом 1 100`)";
+                                 "3. Генератор чисел: используй команду `/рандом`";
+
+            // ИСПРАВЛЕНИЕ: Создаем строгую структуру клавиатуры (ReplyKeyboard) для v22.x
+            var replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
+            {
+        new[]
+        {
+            // ВАЖНО: Замените эту ссылку на ваш GitHub Pages, если она отличается!
+            KeyboardButton.WithWebApp("Открыть приложение 🚀", "https://github.io")
+        }
+    })
+            {
+                ResizeKeyboard = true,        // Делает кнопку компактной по высоте
+                IsPersistent = true             // Кнопка не будет скрываться при вводе текста
+            };
 
             await botClient.SendMessage(
                 chatId: textChatId,
                 text: welcomeText,
                 parseMode: ParseMode.Markdown,
+                replyMarkup: replyKeyboardMarkup, // Передаем клавиатуру
                 cancellationToken: cancellationToken
             );
             return;

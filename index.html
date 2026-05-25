@@ -160,23 +160,28 @@
         }
 
         // Функция отправки данных обратно в чат с C# ботом
-        function sendDataToBot() {
-            const dateInput = document.getElementById('date-select');
-            // @ts-ignore
-            if (dateInput && dateInput.value) {
-                // Преобразуем формат даты из YYYY-MM-DD в DD.MM.YYYY для вашего хендлера
-                // @ts-ignore
-                const [year, month, day] = dateInput.value.split('-');
-                const formattedDate = `${day}.${month}.${year}`;
+function sendDataToBot() {
+    const dateInput = document.getElementById('date-select');
 
-                if (tg) {
-                    // Метод отправляет текст в чат от имени пользователя
-                    tg.sendData(`/дата ${formattedDate}`);
-                }
-            } else {
-                alert("Пожалуйста, сначала выберите дату!");
-            }
+    // @ts-ignore
+    if (dateInput && dateInput.value) {
+        // Берем дату как она есть (в формате ГГГГ-ММ-ДД)
+        // @ts-ignore
+        const rawDate = dateInput.value;
+
+        // Преобразуем из ГГГГ-ММ-ДД в ДД.ММ.ГГГГ
+        const parts = rawDate.split('-');
+        const formattedDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
+
+        if (tg) {
+            // Отправляем команду напрямую в C# хендлер
+            tg.sendData(`/дата ${formattedDate}`);
         }
+    } else {
+        alert("Пожалуйста, сначала выберите дату!");
+    }
+}
+        
 
         function closeApp() {
             if (tg) tg.close();
